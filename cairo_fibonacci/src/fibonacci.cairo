@@ -1,6 +1,6 @@
 use debug::PrintTrait;
 
-fn fibonacci_184() -> felt252 {
+fn fibonacci() -> felt252 {
     let mut a: felt252 = 0;
     let mut b: felt252 = 1;
 
@@ -9,7 +9,7 @@ fn fibonacci_184() -> felt252 {
     let mut i: usize = 1;
     loop {
         i += 1;
-        if i > 184 {
+        if i > 1000 {
             break;
         }
         let temp = a + b;
@@ -22,6 +22,6 @@ fn fibonacci_184() -> felt252 {
 }
 
 fn main() {
-    let fib = fibonacci_184();
+    let fib = fibonacci();
     fib.print();
 }

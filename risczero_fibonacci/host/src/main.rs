@@ -6,36 +6,17 @@ use methods::{
 use risc0_zkvm::{default_prover, ExecutorEnv};
 
 fn main() {
-    // An executor environment describes the configurations for the zkVM
-    // including program inputs.
-    // An default ExecutorEnv can be created like so:
-    // `let env = ExecutorEnv::builder().build().unwrap();`
-    // However, this `env` does not have any inputs.
-    //
-    // To add add guest input to the executor environment, use
-    // ExecutorEnvBuilder::write().
-    // To access this method, you'll need to use ExecutorEnv::builder(), which
-    // creates an ExecutorEnvBuilder. When you're done adding input, call
-    // ExecutorEnvBuilder::build().
 
-    // 350th fibonaci number
-    let input: &str = "127127879743834334146972278486287885163";
-    let env = ExecutorEnv::builder().write(&input).unwrap().build().unwrap();
-
+    // Execute the guest code.
+    let env = ExecutorEnv::builder().write(&iterations).unwrap().build().unwrap();
     // Obtain the default prover.
     let prover = default_prover();
 
     // Produce a receipt by proving the specified ELF binary.
     let receipt = prover.prove_elf(env, RISCZERO_FIBONACCI_ELF).unwrap();
 
-    // TODO: Implement code for retrieving receipt journal here.
-
-    // For example:
-    let _output: String = receipt.journal.decode().unwrap();
-
-    // Print, notice, after committing to a journal, the private input became public
-    println!("Hello, world! I generated a proof of guest execution! {} is a public output from journal ", _output);
-
+    let proof = bincode::serialize(&receipt).unwrap();
+    println!("{}",proof.len());
     // Optional: Verify receipt to confirm that recipients will also be able to
     // verify your receipt
     receipt.verify(RISCZERO_FIBONACCI_ID).unwrap();
